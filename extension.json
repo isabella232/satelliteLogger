@@ -1,0 +1,27 @@
+{
+  "displayName": "SatLog",
+  "name": "satellite-logger",
+  "platform": "web",
+  "version": "1.0.0",
+  "description": "Write console logs using the Launch UI that are only visible in debug mode",
+  "author":
+  {
+    "name": "John Simmons"
+  },
+  "viewBasePath": "src/view/",
+  "actions": [
+  {
+    "displayName": "SatLog",
+    "name": "satellite-logger-log",
+    "schema":
+    {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties":
+      {}
+    },
+    "libPath": "src/lib/actions/satelliteLogger.js",
+    "viewPath": "actions/satelliteLogger.html"
+  }],
+  "iconPath": "icon.svg"
+}

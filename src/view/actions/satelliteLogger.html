@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en" class="spectrum spectrum--medium spectrum--light">
+  <head>
+    <meta charset="UTF-8">
+    <title>Action</title>
+    <link rel="stylesheet" href="../css/mainstyles.css">
+    <link rel="stylesheet" href="//assets.adobedtm.com/activation/reactor/spectrum/2.9.0/spectrum-light.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+  </head>
+  <body>
+      <h2>Write a custom log that will only be visible in <a href="//www.bounteous.com/insights/2019/11/13/debug-mode-and-satellitelogger-adobe-launch/">Launch Debug Mode</a></h2>
+      
+      <!-- Radio buttons -->
+      <h3 class="push-top">Select Log Level</h3>
+      <form class="push-small">
+        <div class="spectrum-Radio spectrum-Radio--quiet myRadio">
+          <input type="radio" name="logLevel" class="spectrum-Radio-input" id="radio-0" checked>
+          <span class="spectrum-Radio-button hideRadio"></span>
+          <label class="spectrum-Radio-label radioLabel" for="radio-0">Log</label>
+        </div>
+        <div class="spectrum-Radio spectrum-Radio--quiet myRadio">
+          <input type="radio" name="logLevel" class="spectrum-Radio-input" id="radio-1">
+          <span class="spectrum-Radio-button hideRadio"></span>
+          <label class="spectrum-Radio-label radioLabel" for="radio-1">Info</label>
+        </div>
+        <div class="spectrum-Radio spectrum-Radio--quiet myRadio warn">
+          <input type="radio" name="logLevel" class="spectrum-Radio-input" id="radio-2">
+          <span class="spectrum-Radio-button hideRadio"></span>
+          <label class="spectrum-Radio-label radioLabel" for="radio-2">Warn</label>
+        </div>
+        <div class="spectrum-Radio spectrum-Radio--quiet myRadio error">
+          <input type="radio" name="logLevel" class="spectrum-Radio-input" id="radio-3">
+          <span class="spectrum-Radio-button hideRadio"></span>
+          <label class="spectrum-Radio-label radioLabel" for="radio-3">Error</label>
+        </div>
+        <div class="spectrum-Radio spectrum-Radio--quiet myRadio">
+          <input type="radio" name="logLevel" class="spectrum-Radio-input" id="radio-4">
+          <span class="spectrum-Radio-button hideRadio"></span>
+          <label class="spectrum-Radio-label radioLabel" for="radio-4">Debug</label>
+        </div>
+      </form>
+
+      <h3 class="push-top">Message</h3>
+      <div class="spectrum-InputGroup Field--longer push-small" style="width: 100%">
+        <input type="text" class="spectrum-Textfield u-fieldLong" id="logInput" style="width:75%">
+        <!-- Data element button -->
+          <button class="spectrum-Tool spectrum-Tool--quiet" id="dataElementSelector">
+              <svg viewBox="0 0 36 36" focusable="false" aria-hidden="true" role="img" class="spectrum-Icon spectrum-Icon--sizeS"><ellipse cx="18" cy="7" rx="16" ry="5"></ellipse><path d="M18 24.275c-4.936 0-14.212-1.169-16-4V29c0 2.761 7.163 5 16 5s16-2.239 16-5v-8.73c-2.447 3.095-11.064 4.005-16 4.005z"></path><path d="M18 14.275c-4.936 0-14.212-1.169-16-4V17c0 2.761 7.163 5 16 5s16-2.239 16-5v-6.73c-2.447 3.095-11.064 4.005-16 4.005z"></path></svg>
+            </button>
+      </div>
+
+    <!-- Prepend Rule Name Checkbox -->
+      <label class="spectrum-Checkbox spectrum-Checkbox--quiet">
+      <input type="checkbox" class="spectrum-Checkbox-input" id="ruleName">
+      <span class="spectrum-Checkbox-box">
+        <svg class="spectrum-Icon spectrum-UIIcon-CheckmarkSmall spectrum-Checkbox-checkmark" focusable="false" aria-hidden="true">
+          <use xlink:href="#spectrum-css-icon-CheckmarkSmall">
+            <svg id="spectrum-css-icon-CheckmarkSmall"><path d="M4.5 11a.999.999 0 01-.788-.385l-3-4a1 1 0 111.576-1.23L4.5 8.376l5.212-6.99a1 1 0 111.576 1.23l-6 8A.999.999 0 014.5 11z" class="spectrum-UIIcon--large"></path><path d="M3.788 9A.999.999 0 013 8.615l-2.288-3a1 1 0 111.576-1.23l1.5 1.991 3.924-4.991a1 1 0 111.576 1.23l-4.712 6A.999.999 0 013.788 9z" class="spectrum-UIIcon--medium"></path></svg>
+          </use>
+        </svg>
+      </span>
+      <span class="spectrum-Checkbox-label">Prepend rule name?</span>
+    </label>
+
+    <!-- Output -->
+    <p class="push-top"><strong>Preview</strong></p>
+    <div class="mono output">
+        <p><span id="emoji"></span> 🚀 [SatLog] <span id="ruleNamePrefix"></span><span id="output"></span></p>
+    </div>
+    <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
+    <script>
+      window.extensionBridge.register({
+        init: function(info) {
+          if (info.settings) {
+
+            // Put the log content in the input box
+            let logInput = info.settings.logInput || "";
+            if (logInput) {
+              document.querySelector("#logInput").value = logInput;
+              document.querySelector("#output").innerText = document.querySelector("#logInput").value
+            }
+
+            // Check the correct log level radio box
+            let logLevel = info.settings.logLevel;
+            let radioLabels = [...document.querySelectorAll(".spectrum-Radio-label")]
+            let labelToSelect = radioLabels.filter(x => x.innerText.toLowerCase() == logLevel).pop();
+            document.querySelector(`#${labelToSelect.getAttribute("for")}`).setAttribute("checked", "checked")
+            var changeEvent = new Event('change');
+            document.querySelector(`#${labelToSelect.getAttribute("for")}`).dispatchEvent(changeEvent);
+
+
+            // Check/uncheck the rule prefix setting
+            let ruleName = info.settings.ruleName || false;
+            document.querySelector("#ruleName").checked = ruleName;
+            var changeEvent = new Event('change');
+            document.querySelector("#ruleName").dispatchEvent(changeEvent);
+          }
+        },
+
+        getSettings: function() {
+          // TODO Return settings object from form values.
+          let selectedLog = [...document.querySelectorAll("input[type='radio']")].filter(x => x.checked);
+
+          return {
+            logInput: document.querySelector("#logInput").value || "test",
+            logLevel: selectedLog[0].labels[0].innerText.toLowerCase(),
+            ruleName: document.querySelector("#ruleName").checked
+          }
+        },
+
+        validate: function() {
+          // TODO Return whether settings are valid.
+          return true;
+        }
+      });
+    </script>
+    <script>
+
+    const emojiMap = {
+      "warn": String.fromCodePoint(0x26A0),
+      "info": String.fromCodePoint(0x2139),
+      "debug": "",
+      "log": "",
+      "error": String.fromCodePoint(0x2757),
+    }
+
+    const bgColorMap = {
+      "warn": "#FFFBD6",
+      "info": "",
+      "debug": "",
+      "log": "",
+      "error": "#FDF2F5",
+    }
+
+    const setTextPreview = () => {
+      //reset output element
+      document.querySelector("#output").innerText = "";
+
+      // put sum of all values in output string
+      document.querySelector("#output").innerText += document.querySelector("#logInput").value;
+
+      let level = [...document.querySelectorAll("input[type='radio']")].filter(x => x.checked).pop().labels[0].innerText.toLowerCase();
+      // adjust output box styles
+      document.querySelector(".output").style['background-color'] = bgColorMap[level];
+      document.querySelector("#emoji").innerText = emojiMap[level]
+
+      // check the rule name prefix box      
+      let ruleNameCheckbox = document.querySelector("#ruleName");
+      if (ruleNameCheckbox.checked) {
+        document.querySelector("#ruleNamePrefix").innerText = ' [Rule Name] '
+      } else {
+        document.querySelector("#ruleNamePrefix").innerText = ""
+      }
+
+    }
+
+    const buttonSelection = (event) => {
+      // highlight the clicked one
+        event.target.parentElement.style['border-width'] = "5px";
+        event.target.parentElement.style['border-color'] = "rgb(75, 75, 75)";
+        //unlight the other ones
+        let others = radioButtons.filter(e => e != event.target);
+        others.map(e => e.parentElement.style.border = "")
+    }
+
+    //update the preview box when a change to the input occurs
+    const logInput = document.querySelector("#logInput");
+    logInput.addEventListener("keyup", setTextPreview)
+    logInput.addEventListener("change", setTextPreview)
+    logInput.addEventListener("blur", setTextPreview)
+    logInput.addEventListener("load", setTextPreview)
+    
+    // Update the preview box when the page loads or a radio button is clicked
+    const radioButtons = [...document.querySelectorAll("input[type='radio']")]
+    radioButtons.forEach(function(el) {
+      el.addEventListener("click", setTextPreview);
+      el.addEventListener("change", setTextPreview);
+      el.addEventListener("change", buttonSelection)
+    })
+
+
+    //update the preview box when the rule name checkbox is clicked
+    const ruleNameCheckbox = document.querySelector("#ruleName");
+    ruleNameCheckbox.addEventListener('click', setTextPreview);
+    ruleNameCheckbox.addEventListener('change', setTextPreview);
+
+    // Add data element selector function
+    const dataElementSelector = document.querySelector("#dataElementSelector")
+    dataElementSelector.addEventListener("click", () => {
+          window.extensionBridge.openDataElementSelector().then(function(dataElement) {
+         
+          // add the data element value to the input box
+          document.querySelector("#logInput").value += dataElement; 
+          
+          // dispatch change event on data element selection
+          var changeEvent = new Event('change');
+          document.querySelector("#logInput").dispatchEvent(changeEvent);
+        });
+        })
+    </script>
+  </body>
+</html>
+
+

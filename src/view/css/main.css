@@ -1,0 +1,51 @@
+body {
+  padding: 1em
+}
+
+.mono {
+  font-family: 'Source Code Pro', monospace;
+}
+
+.push-top {
+  padding-top: 2em;
+}
+
+.push-small {
+	padding-top: 1em;
+}
+
+#emoji {
+  font-size: 1.5em;
+}
+
+.output {
+  border: 1px solid gray;
+  width: 75%;
+}
+
+.output p {
+  margin: .5em
+}
+
+.myRadio {
+	border: 1px solid gray;
+	width: 100px;
+	border-radius: 10px;
+	background-color: whitesmoke;
+}
+
+.radioLabel {
+	margin: 0 auto;
+}
+
+.hideRadio {
+	display: none;	
+}
+
+.warn {
+	background-color: #FFFBD6;
+}
+
+.error {
+	background-color: #FDF2F5;
+}
