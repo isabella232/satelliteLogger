@@ -1,9 +1,9 @@
 {
-  "displayName": "SatLog",
-  "name": "satellite-logger",
+  "displayName": "Custom Debug Logger",
+  "name": "custom-debug-logger",
   "platform": "web",
   "version": "1.0.0",
-  "description": "Write console logs using the Launch UI that are only visible in debug mode",
+  "description": "Write custom logs using the Launch UI that are only visible in debug mode",
   "author":
   {
     "name": "John Simmons"
