@@ -2,17 +2,17 @@
 
 module.exports = function(settings, event) {
   // TODO Perform some action.
-  let logInput = settings.logInput;
-  let logLevel = settings.logLevel;
-  let ruleName = settings.ruleName
+  var logInput = settings.logInput;
+  var logLevel = settings.logLevel;
+  var ruleName = settings.ruleName
 
 
   // get current debug status
-  let currentDebugMode = !localStorage.getItem("com.adobe.reactor.debug")
+  var currentDebugMode = !localStorage.getItem("com.adobe.reactor.debug")
 
   //prepend rule name if selected
   if (ruleName) {
-  	logInput = `[${event.$rule.name}] ${logInput}`;	
+    logInput = "[" + event.$rule.name + "] " + logInput
   }
   
   

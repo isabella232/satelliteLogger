@@ -11,7 +11,7 @@
   "viewBasePath": "src/view/",
   "actions": [
   {
-    "displayName": "SatLog",
+    "displayName": "Log",
     "name": "satellite-logger-log",
     "schema":
     {
