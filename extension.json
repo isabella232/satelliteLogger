@@ -2,26 +2,25 @@
   "displayName": "Custom Debug Logger",
   "name": "custom-debug-logger",
   "platform": "web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Write custom logs using the Launch UI that are only visible in debug mode",
-  "author":
-  {
+  "author": {
     "name": "John Simmons"
   },
   "viewBasePath": "src/view/",
   "actions": [
-  {
-    "displayName": "Log",
-    "name": "satellite-logger-log",
-    "schema":
     {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "type": "object",
-      "properties":
-      {}
-    },
-    "libPath": "src/lib/actions/satelliteLogger.js",
-    "viewPath": "actions/satelliteLogger.html"
-  }],
-  "iconPath": "icon.svg"
+      "displayName": "Log",
+      "name": "satellite-logger-log",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "libPath": "src/lib/actions/satelliteLogger.js",
+      "viewPath": "actions/satelliteLogger.html"
+    }
+  ],
+  "iconPath": "icon.svg",
+  "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.104698.html"
 }
