@@ -95,6 +95,10 @@
             document.querySelector("#ruleName").checked = ruleName;
             var changeEvent = new Event('change');
             document.querySelector("#ruleName").dispatchEvent(changeEvent);
+          } else {
+            //if no settings, select log level type by default
+            document.querySelector("#radio-0").parentElement.style['border-width'] = "5px";
+            document.querySelector("#radio-0").parentElement.style['border-color'] = "rgb(75, 75, 75)";
           }
         },
 
@@ -103,7 +107,7 @@
           let selectedLog = [...document.querySelectorAll("input[type='radio']")].filter(x => x.checked);
 
           return {
-            logInput: document.querySelector("#logInput").value || "test",
+            logInput: document.querySelector("#logInput").value || "",
             logLevel: selectedLog[0].labels[0].innerText.toLowerCase(),
             ruleName: document.querySelector("#ruleName").checked
           }
@@ -161,7 +165,7 @@
         event.target.parentElement.style['border-color'] = "rgb(75, 75, 75)";
         //unlight the other ones
         let others = radioButtons.filter(e => e != event.target);
-        others.map(e => e.parentElement.style.border = "")
+        others.map(e => e.parentElement.style.border = "");
     }
 
     //update the preview box when a change to the input occurs
@@ -177,7 +181,7 @@
       el.addEventListener("click", setTextPreview);
       el.addEventListener("change", setTextPreview);
       el.addEventListener("change", buttonSelection)
-    })
+    });
 
 
     //update the preview box when the rule name checkbox is clicked
